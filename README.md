@@ -1,2 +1,2 @@
-# -mirai-plugins-music
+# mirai-plugins-music
 音乐插件
