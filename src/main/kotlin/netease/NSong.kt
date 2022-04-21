@@ -2,6 +2,7 @@ package com.hcyacg.netease
 
 import com.alibaba.fastjson.JSON
 import com.hcyacg.config.Setting
+import com.hcyacg.data.Data
 import com.hcyacg.entity.NetEaseDetailResponse
 import com.hcyacg.entity.NetEaseSongResponse
 import com.hcyacg.utils.RequestUtil
@@ -18,25 +19,31 @@ object NSong {
     private val requestBody: RequestBody? = null
     private val logger = MiraiLogger.Factory.create(this::class.java)
 
+    /**
+     * 根据id点歌
+     */
     suspend fun load(event: GroupMessageEvent) {
         try{
             val message = At(event.sender).plus("\n")
             var key = event.message.contentToString()
             key = key.replace("${Setting.netease.command.song} ", "")
 
+            headers.add("cookie", Data.neteaseCookie)
             var data = RequestUtil.requestObject(
                 RequestUtil.Companion.Method.GET,
-                "https://docs.hcyacg.com/api/netease/detail?id=$key",
+                "${Setting.neteaseDomain}/song/detail?ids=$key",
                 requestBody,
                 headers.build(),
                 logger
             )
             val netEaseDetailResponse = JSON.parseObject(data.toString(), NetEaseDetailResponse::class.java)
 
+
             if (null == netEaseDetailResponse.songs) {
                 event.subject.sendMessage(message.plus("该id没有查询到歌曲数据"))
                 return
             }
+
 
             val title = netEaseDetailResponse.songs[0].name
             val author = netEaseDetailResponse.songs[0].ar?.get(0)?.name
@@ -44,9 +51,10 @@ object NSong {
             val jump = "https://music.163.com/#/song?id=${netEaseDetailResponse.songs[0].id}"
 
 
+
             data = RequestUtil.requestObject(
                 RequestUtil.Companion.Method.GET,
-                "https://docs.hcyacg.com/api/netease/song?id=$key",
+                "${Setting.neteaseDomain}/song/url?id=${netEaseDetailResponse.songs[0].id}&realIP=116.25.146.177",
                 requestBody,
                 headers.build(),
                 logger
@@ -56,6 +64,7 @@ object NSong {
                 event.subject.sendMessage(message.plus("该歌曲没有源曲数据"))
                 return
             }
+
 
             val song = netEaseSongResponse.data[0].url
 

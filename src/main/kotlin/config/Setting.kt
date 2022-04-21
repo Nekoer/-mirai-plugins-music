@@ -6,15 +6,18 @@ import net.mamoe.mirai.console.data.value
 
 object Setting : AutoSavePluginConfig("Setting") {
 
-//    @ValueName("admins")
+    //    @ValueName("admins")
 //    var admins: MutableList<String> by value()
 //    @ValueName("groups")
 //    var groups: MutableList<String> by value()
+    @ValueName("neteaseDomain")
+    var neteaseDomain: String by value("https://netease-cloud-music-api-two-iota.vercel.app")
+
     @ValueName("netease")
     var netease: NetEase by value()
+
     @ValueName("qq")
     var qq: QQ by value()
-//    @ValueName("config")
-//    var config: Config by value()
+
 
 }

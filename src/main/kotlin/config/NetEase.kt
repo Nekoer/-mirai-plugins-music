@@ -6,5 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NetEase(
     @SerialName("command")
-    val command: NCommand = NCommand()
+    val command: NCommand = NCommand(),
+    @SerialName("account")
+    val account:NAccount = NAccount()
 )

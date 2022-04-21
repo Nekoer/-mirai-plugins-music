@@ -83,7 +83,6 @@ class RequestUtil {
 
             response = client.build().newCall(request).execute()
 
-
             if (response!!.isSuccessful) {
                 return JSONObject.parseObject(response!!.body?.string())
             }
