@@ -59,7 +59,7 @@ data class Song(
     @JSONField(name = "m")
     val m: M? = M(),
     @JSONField(name = "mark")
-    val mark: Int? = 0,
+    val mark: Long? = 0,
     @JSONField(name = "mst")
     val mst: Int? = 0,
     @JSONField(name = "mv")
